@@ -41,16 +41,18 @@ body {
 
 .table-row {
   position: relative;
-
+  &--record {    
+    &:focus td{
+      font-weight: bold;
+    }
+  }
   &--collapsed {
+    display: none;
     td{
       padding:0;
       border: 0;
     }
     &+tr td{ border-top: 0}
-  }
-  &:focus td{
-    font-weight: bold;
   }
 }
 
@@ -62,6 +64,7 @@ body {
   line-height: 1.5;
 
   .table-row--expanded & {
+    display: table-row;
     max-height: 9999px;
     transition: all 0.7s ease-in;
   }

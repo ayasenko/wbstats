@@ -53,7 +53,7 @@ class TableBody extends Component {
         <React.Fragment key={itemKey}>
           <tr 
             tabIndex="0" 
-            className="table-row" 
+            className="table-row table-row--record" 
             onClick={() => this.handleRowFocus(null, item)}
             onKeyPress={e => this.handleRowFocus(e, item)} key={item.name}>
             <td>{rowCounter++}</td>
