@@ -66,6 +66,9 @@ body {
 
       &--expanded {
         display: block;
+        td{
+          display: block;
+        }
       }
     }
     td:nth-child(1), 
@@ -118,6 +121,9 @@ body {
     display: table-row;
     max-height: 9999px;
     transition: all 0.7s ease-in;
+    @include media(phone) {
+      display: block;
+    }
   }
 }
 
