@@ -48,6 +48,7 @@ class TableBody extends Component {
       const population = item.population && item.population[contextYear] ? item.population[contextYear] : null;
       const gdp = item.gdp && item.gdp[contextYear] ? item.gdp[contextYear] : null;
       const gdpCapita = item.gdpCapita ? item.gdpCapita[contextYear] : null;
+      const { name, extract, expanded } = item;
       
       return (
         <React.Fragment key={itemKey}>
@@ -55,27 +56,26 @@ class TableBody extends Component {
             tabIndex="0" 
             className="table-row table-row--record" 
             onClick={() => this.handleRowFocus(null, item)}
-            onKeyPress={e => this.handleRowFocus(e, item)} key={item.name}>
+            onKeyPress={e => this.handleRowFocus(e, item)}>
             <td>{rowCounter++}</td>
-            <td>{item.name}</td>
+            <td>{name}</td>
             <td>{population ? population : 'no data'}</td>
             <td>{gdp ? `$${parseInt(gdp, 10)}` : 'no data'}</td>
             <td>{gdpCapita ? `$${parseInt(gdpCapita, 10)}` : 'no data'}</td>
           </tr>
           <tr 
-            tabIndex={item.expanded ? '0' : '-1'} 
-            className={`table-row ${item.expanded ? 'table-row--expanded' : 'table-row--collapsed'}`}
-            key={`${item.name}2`}>
+            tabIndex={expanded ? '0' : '-1'} 
+            className={`table-row ${expanded ? 'table-row--expanded' : 'table-row--collapsed'}`}>
             <td colSpan="5">
               <div className="more-info-block">
-                <p>{item.extract}</p>
+                <p>{extract}</p>
                 <p>
                   <strong>
                     Read more about &nbsp;
                     <a 
-                      href={`https://en.wikipedia.org/wiki/${item.name}`} 
-                      tabIndex={item.expanded ? '0' : '-1'} 
-                      target="_blank">{item.name}</a>
+                      href={`https://en.wikipedia.org/wiki/${name}`} 
+                      tabIndex={expanded ? '0' : '-1'} 
+                      target="_blank">{name}</a>
                   </strong>
                 </p>
               </div>
@@ -90,16 +90,12 @@ class TableBody extends Component {
         {tableRows}
       </tbody>
     );
-
   }
 }
 
 const mapStateToProps = state => {
-  return { 
-    data: state.dataReducer.data,
-    contextYear: state.dataReducer.contextYear,
-    sorting: state.dataReducer.sorting
-  };
+  const { data, contextYear, sorting} = state.dataReducer;
+  return { data, contextYear, sorting };
 };
 
 export default connect(
