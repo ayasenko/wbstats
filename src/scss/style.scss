@@ -99,6 +99,10 @@ body {
     &:focus td{
       font-weight: bold;
     }
+
+    &:nth-child(4n-1) td{
+      background-color: #eee;
+    }
   }
   &--collapsed {
     display: none;
