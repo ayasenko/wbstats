@@ -17,7 +17,7 @@ class Form extends Component {
     return (      
       <form className="form">
         <label className="form__label">
-          World Bank data for year: &nbsp;
+          World Bank Data, year:
           <input className="form__input" onChange={this.handleChange} value={this.props.contextYear} />
         </label>
     </form>

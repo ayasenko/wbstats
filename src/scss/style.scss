@@ -141,11 +141,14 @@ body {
   background-color: #eee;
 
   &__input {
-    background-color: #fff;
+    background-color: transparent;
     border: 0;
     font-size: 18px;
     line-height: 25px;
     padding:0 10px;
-    width: 60px;
+    width: 45px;
+    &:focus{
+      background-color: white;
+    }
   }
 }
