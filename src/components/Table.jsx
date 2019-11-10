@@ -3,24 +3,36 @@ import { connect } from 'react-redux';
 import TableHead from './TableHead';
 import TableBody from './TableBody';
 import { setData } from '../redux/actions';
-import wbpopulation from '../data/wbpopulation';
-import wbgdp from '../data/wbgdp';
 
 class Table extends Component {
   componentDidMount() {
-    const obj = this.transformRecordsToObject(
-      [...this.transformXmlDataToArray(wbpopulation), ...this.transformXmlDataToArray(wbgdp)]
-    );
-    const data = {};
-    for (let itemKey in obj) {
-      const item = obj[itemKey];
-      item.gdpCapita = this.getGdpPerCapita(item);
-      item.expanded = false;
-      item.extract = null;
-      item.key = itemKey;
-      data[itemKey] = item;
-    }    
-    this.props.setData({ data });
+    const fetchPopulation = new Promise(function(resolve, reject) {
+      fetch('https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?date=2018&per_page=300')
+        .then(data => data.text())
+        .then(text => resolve(text))
+    });
+    const fetchGdp = new Promise(function(resolve, reject) {
+        fetch('https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?date=2018&per_page=300')
+        .then(data => data.text())
+        .then(text => resolve(text))
+    });
+    
+    Promise.all([fetchGdp, fetchPopulation])
+      .then(d => {
+        const obj = this.transformRecordsToObject(
+          [...this.transformXmlDataToArray(d[0]), ...this.transformXmlDataToArray(d[1])]
+        );
+        const data = {};
+        for (let itemKey in obj) {
+          const item = obj[itemKey];
+          item.gdpCapita = this.getGdpPerCapita(item);
+          item.expanded = false;
+          item.extract = null;
+          item.key = itemKey;
+          data[itemKey] = item;
+        }    
+        this.props.setData({ data });
+      });
   }
 
   getGdpPerCapita(item) {
@@ -51,42 +63,31 @@ class Table extends Component {
     return newRecords;
   }
 
-  transformXmlDataToArray(xml) {
+  transformXmlDataToArray(str) {
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xml, "text/xml");
-    const xmlData = xmlDoc.getElementsByTagName('data')[0];
-    const records = xmlData.getElementsByTagName('record');
+    const xmlDoc = parser.parseFromString(str, "text/xml");
+    const xmlData = xmlDoc.children[0];
+    const records = xmlData.children;
+
     const newRecords = [];
     
     for (let i = 0; i < records.length; i++) {
-      let fieldCounter = 0;
-      const newItem = {};
-      for(let j = 0; j < records[i].childNodes.length; j++) {
-        const field = records[i].childNodes[j];
-        const nodeType = field.nodeType;
-        if (nodeType && nodeType === 1 && field.childNodes.length) {
-          fieldCounter++;
-          const nodeValue = field.childNodes[0].nodeValue;
-
-          switch(fieldCounter){
-            case 1 :
-              newItem.area = nodeValue;
-              newItem.areaKey = field.attributes['key'].nodeValue;
-              break;
-            case 2 :
-              newItem.item = nodeValue;
-              newItem.itemKey = field.attributes['key'].nodeValue;
-              break;
-            case 3 :
-              newItem.year = nodeValue;
-              break;
-            case 4 :
-              newItem.value = nodeValue;
-              break;
-          } 
-        }
+      try {
+        const newItem = {};
+        const indicator = records[i].getElementsByTagName('wb:indicator')[0].id
+        const country = records[i].getElementsByTagName('wb:country')[0].innerHTML
+        const iso3code = records[i].getElementsByTagName('wb:countryiso3code')[0].innerHTML
+        const value = records[i].getElementsByTagName('wb:value')[0].innerHTML
+        const year = records[i].getElementsByTagName('wb:date')[0].innerHTML
+        newItem.year = year;
+        newItem.area = country;
+        newItem.areaKey = iso3code;
+        newItem.itemKey = indicator;
+        newItem.value = value;      
+        newRecords.push(newItem);
+      } catch(err) {
+        console.error(err);
       }
-      newRecords.push(newItem);
     }
     return newRecords;
   }
