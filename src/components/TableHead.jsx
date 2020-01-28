@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import { sortByGroup } from '../redux/actions';
+import { sortByGroup } from "../redux/actions";
 
 class TableHead extends Component {
   constructor() {
@@ -21,19 +21,19 @@ class TableHead extends Component {
           <th></th>
           <th></th>
           <th>
-            <button 
-              data-group-name='population' 
-              onClick={this.sortByGroup}>Population</button>
+            <button data-group-name="population" onClick={this.sortByGroup}>
+              Population
+            </button>
           </th>
           <th>
-            <button 
-              data-group-name='gdp' 
-              onClick={this.sortByGroup}>Economy</button>
+            <button data-group-name="gdp" onClick={this.sortByGroup}>
+              Economy
+            </button>
           </th>
           <th>
-            <button 
-              data-group-name='gdpCapita' 
-              onClick={this.sortByGroup}>GDP per capita</button>
+            <button data-group-name="gdpCapita" onClick={this.sortByGroup}>
+              GDP per capita
+            </button>
           </th>
         </tr>
       </thead>
@@ -41,7 +41,4 @@ class TableHead extends Component {
   }
 }
 
-export default connect(
-  null,
-  { sortByGroup }
-)(TableHead);
+export default connect(null, { sortByGroup })(TableHead);

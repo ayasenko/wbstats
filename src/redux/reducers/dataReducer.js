@@ -17,10 +17,12 @@ export default function(state = initialState, action) {
         data: action.payload
       };
     }
+
     case EXPAND_RECORD: {
       const { data } = state;
       const { targetKey, response } = action.payload;
       const newData = {}
+
       Object.keys(data).map(itemKey => {
         const item = data[itemKey];
         item.expanded = item.key === targetKey && !item.expanded ? true : false;
@@ -33,6 +35,7 @@ export default function(state = initialState, action) {
         data: newData
       };
     }
+
     case SORT_BY_GROUP: {      
       const { data, contextYear, sorting } = state;
       const { direction } = sorting;
@@ -57,6 +60,7 @@ export default function(state = initialState, action) {
         }
       }
     }
+    
     case SET_YEAR: {      
       const { contextYear } = action.payload;
       console.log({ contextYear })
