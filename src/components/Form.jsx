@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { setYear } from "../redux/actions";
+import { fetchData } from "../helpers";
+import { setYear, setData } from "../redux/actions";
 
 class Form extends Component {
   constructor() {
@@ -9,8 +10,10 @@ class Form extends Component {
     this.handleYearChange = this.handleYearChange.bind(this);
   }
 
-  handleYearChange(event) {
-    this.props.setYear({ contextYear: event.target.value });
+  async handleYearChange(event) {
+    await this.props.setYear({ contextYear: event.target.value });
+    const data = await fetchData(this.props.contextYear, 300);
+    this.props.setData({ data });
   }
 
   render() {
@@ -35,4 +38,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setYear })(Form);
+export default connect(mapStateToProps, { setYear, setData })(Form);

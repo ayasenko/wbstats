@@ -63,7 +63,7 @@ export default function(state = initialState, action) {
     
     case SET_YEAR: {      
       const { contextYear } = action.payload;
-      console.log({ contextYear })
+      
       return {
         ...state,
         contextYear
