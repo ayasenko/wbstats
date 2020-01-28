@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { expandRecord } from "../redux/actions";
+import { wikiApi } from "../api";
 
 class TableBody extends Component {
   constructor() {
@@ -22,24 +23,18 @@ class TableBody extends Component {
   }
 
   async getShortWikiInfo(itemName) {
-    const formatShortInfoResponse = async p => {
-      const url = `https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${itemName}`;
-      const response = await fetch(url);
-      const reslut = await response.json();
-      const { pages } = reslut.query;
-      for (let key in pages) {
-        return pages[key];
-      }
-    };
-
-    return await formatShortInfoResponse();
+    const result = await wikiApi.getShortWikiInfo(itemName);
+    const { pages } = result.data.query;
+    for (let key in pages) {
+      return pages[key];
+    }
   }
 
   decodeHtml(html) {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
-}
+  }
 
   render() {
     const { data, contextYear } = this.props;
@@ -68,9 +63,7 @@ class TableBody extends Component {
             onKeyPress={e => this.handleRowFocus(e, item)}
           >
             <td>{rowCounter++}</td>
-            <td>
-              {this.decodeHtml(name)}
-            </td>
+            <td>{this.decodeHtml(name)}</td>
             <td>{population ? population : "no data"}</td>
             <td>{gdp ? `$${parseInt(gdp, 10)}` : "no data"}</td>
             <td>{gdpCapita ? `$${parseInt(gdpCapita, 10)}` : "no data"}</td>

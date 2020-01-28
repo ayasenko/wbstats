@@ -12,7 +12,7 @@ export const wbApi = {
 }
 
 export const wikiApi = {
-  async fetchPopulation(itemName) {
+  async getShortWikiInfo(itemName) {
     const url = `https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${itemName}`;
     return await axios.get(url);
   }
