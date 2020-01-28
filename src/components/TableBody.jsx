@@ -35,6 +35,12 @@ class TableBody extends Component {
     return await formatShortInfoResponse();
   }
 
+  decodeHtml(html) {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
+
   render() {
     const { data, contextYear } = this.props;
     if (!data) {
@@ -62,7 +68,9 @@ class TableBody extends Component {
             onKeyPress={e => this.handleRowFocus(e, item)}
           >
             <td>{rowCounter++}</td>
-            <td>{name}</td>
+            <td>
+              {this.decodeHtml(name)}
+            </td>
             <td>{population ? population : "no data"}</td>
             <td>{gdp ? `$${parseInt(gdp, 10)}` : "no data"}</td>
             <td>{gdpCapita ? `$${parseInt(gdpCapita, 10)}` : "no data"}</td>
