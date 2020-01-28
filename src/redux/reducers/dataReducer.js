@@ -1,7 +1,9 @@
-import { SET_DATA, EXPAND_RECORD, SORT_BY_GROUP, SET_YEAR } from "../actions/types";
+import { FETCH_DATA, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE, EXPAND_RECORD, SORT_BY_GROUP, SET_YEAR } from "../actions/types";
 
 const initialState = {
   contextYear: '2018',
+  isFetching: false,
+  isFailed: false,
   sorting: {
     direction: 'desc',
     groupName: 'population'
@@ -11,10 +13,27 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_DATA: {
+    case FETCH_DATA: {
       return {
         ...state,
-        data: action.payload
+        isFetching: true
+      };
+    }
+
+    case FETCH_DATA_SUCCESS: {
+      return {
+        ...state,
+        data: action.payload,
+        isFetching: false,
+        isFailed: false
+      };
+    }
+
+    case FETCH_DATA_FAILURE: {
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true
       };
     }
 

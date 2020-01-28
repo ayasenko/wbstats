@@ -56,7 +56,7 @@ export const transformXmlDataToArray = str => {
   return newRecords;
 }
 
-export const fetchData =  async (year, itemsCount) => {
+export const getData =  async (year, itemsCount) => {
   const getGdpPerCapita = item => {
     const gdpCapita = {};
     for (let year in item.population) {

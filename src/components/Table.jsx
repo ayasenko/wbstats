@@ -2,16 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
-import { setData } from "../redux/actions";
-import { fetchData } from "../helpers";
+import Preloader from './Preloader';
+import { setData, fetchData } from "../redux/actions";
 
 class Table extends Component {
-  async componentDidMount() {
-    const data = await fetchData(this.props.contextYear, 300);
-    this.props.setData({ data });
+  componentDidMount() {
+    this.props.fetchData({
+      year: 2018,
+      itemsCount: 300
+    });
   }
 
   render() {
+    if(this.props.isFetching) {
+      return <Preloader />;
+    }
+    
     return (
       <table className="table">
         <TableHead />
@@ -23,8 +29,10 @@ class Table extends Component {
 
 const mapStateToProps = state => {
   return {
-    contextYear: state.dataReducer.contextYear
+    contextYear: state.dataReducer.contextYear,
+    isFetching: state.dataReducer.isFetching,
+    isFailed: state.dataReducer.isFailed
   };
 };
 
-export default connect(mapStateToProps, { setData })(Table);
+export default connect(mapStateToProps, { setData, fetchData })(Table);
