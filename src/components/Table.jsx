@@ -14,8 +14,18 @@ class Table extends Component {
   }
 
   render() {
-    if(this.props.isFetching) {
+    const { isFetching, isFailed } = this.props;
+    
+    if(isFetching) {
       return <Preloader />;
+    }
+
+    if(isFailed) {
+      return (
+        <div className="error-message">
+          <p>The request has failed...</p>
+        </div>
+      );
     }
     
     return (

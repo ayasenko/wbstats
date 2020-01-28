@@ -1,6 +1,6 @@
 import { wbApi } from '../api';
 
-export const transformRecordsToObject = records => {
+const transformRecordsToObject = records => {
   const newRecords = {};
   records.forEach(record => {
     newRecords[record.areaKey] = newRecords[record.areaKey]
@@ -24,7 +24,7 @@ export const transformRecordsToObject = records => {
   return newRecords;
 }
 
-export const transformXmlDataToArray = str => {
+const transformXmlDataToArray = str => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(str, "text/xml");
   const xmlData = xmlDoc.children[0];
@@ -51,6 +51,7 @@ export const transformXmlDataToArray = str => {
       newRecords.push(newItem);
     } catch (err) {
       console.error(err);
+      throw new Error(err);
     }
   }
   return newRecords;
