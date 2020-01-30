@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import { getData } from "../helpers";
 import { setYear, setData, fetchData } from "../redux/actions";
+import logo from './logo-wb.svg';
 
 class Form extends Component {
   constructor() {
@@ -22,8 +21,11 @@ class Form extends Component {
   render() {
     return (
       <form className="form">
+        <a href="https://www.worldbank.org/">
+          <img src={logo} alt=""/>
+        </a>
         <label className="form__label">
-          World Bank Data, year:
+          Show year:
           <input
             className="form__input"
             onChange={this.handleYearChange}
