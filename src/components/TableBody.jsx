@@ -21,14 +21,6 @@ class TableBody extends Component {
     }
   }
 
-  async getShortWikiInfo(itemName) {
-    const result = await wikiApi.getShortWikiInfo(itemName);
-    const { pages } = result.data.query;
-    for (let key in pages) {
-      return pages[key];
-    }
-  }
-
   decodeHtml(html) {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;
