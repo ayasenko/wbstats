@@ -1,4 +1,4 @@
-import { wbApi } from '../api';
+import { wbApi } from "../api";
 
 const transformRecordsToObject = records => {
   const newRecords = {};
@@ -22,7 +22,7 @@ const transformRecordsToObject = records => {
   });
 
   return newRecords;
-}
+};
 
 const transformXmlDataToArray = str => {
   const parser = new DOMParser();
@@ -38,9 +38,8 @@ const transformXmlDataToArray = str => {
       const indicator = records[i].getElementsByTagName("wb:indicator")[0].id;
       const country = records[i].getElementsByTagName("wb:country")[0]
         .innerHTML;
-      const iso3code = records[i].getElementsByTagName(
-        "wb:countryiso3code"
-      )[0].innerHTML;
+      const iso3code = records[i].getElementsByTagName("wb:countryiso3code")[0]
+        .innerHTML;
       const value = records[i].getElementsByTagName("wb:value")[0].innerHTML;
       const year = records[i].getElementsByTagName("wb:date")[0].innerHTML;
       newItem.year = year;
@@ -55,9 +54,9 @@ const transformXmlDataToArray = str => {
     }
   }
   return newRecords;
-}
+};
 
-export const getData =  async (year, itemsCount) => {
+export const getData = async (year, itemsCount) => {
   const getGdpPerCapita = item => {
     const gdpCapita = {};
     for (let year in item.population) {
@@ -73,7 +72,7 @@ export const getData =  async (year, itemsCount) => {
     wbApi.fetchGdp(year, itemsCount),
     wbApi.fetchPopulation(year, itemsCount)
   ]);
-  
+
   const obj = transformRecordsToObject([
     ...transformXmlDataToArray(response[0].data),
     ...transformXmlDataToArray(response[1].data)
@@ -90,4 +89,11 @@ export const getData =  async (year, itemsCount) => {
   }
 
   return data;
-}
+};
+
+export const getWikiExtract = response => {
+  const { pages } = response.data.query;
+  for (let key in pages) {
+    return pages[key];
+  }
+};

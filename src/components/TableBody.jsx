@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { expandRecord } from "../redux/actions";
+import { expandRecord, fetchWikiData } from "../redux/actions";
 import { wikiApi } from "../api";
 
 class TableBody extends Component {
@@ -17,8 +17,11 @@ class TableBody extends Component {
   handleRowFocus(event, target) {
     if ((event && event.key === "Enter") || !event) {
       this.getShortWikiInfo(target.name).then(response => {
-        this.props.expandRecord({ targetKey: target.key, response });
+        // debugger;
+        // this.props.expandRecord({ targetKey: target.key, response });
       });
+      const { name, key } = target;
+      this.props.fetchWikiData({ name, key });
     }
   }
 
@@ -105,4 +108,6 @@ const mapStateToProps = state => {
   return { data, contextYear, sorting };
 };
 
-export default connect(mapStateToProps, { expandRecord })(TableBody);
+export default connect(mapStateToProps, { expandRecord, fetchWikiData })(
+  TableBody
+);
