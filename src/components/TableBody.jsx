@@ -16,10 +16,6 @@ class TableBody extends Component {
 
   handleRowFocus(event, target) {
     if ((event && event.key === "Enter") || !event) {
-      this.getShortWikiInfo(target.name).then(response => {
-        // debugger;
-        // this.props.expandRecord({ targetKey: target.key, response });
-      });
       const { name, key } = target;
       this.props.fetchWikiData({ name, key });
     }
