@@ -1,0 +1,5 @@
+{
+  "name": "UkrZen",
+  "description": "App calculates mean currency values in realtime through finance.ua api",
+  "repository": "https://github.com/ayasenko/ukrzen"
+}

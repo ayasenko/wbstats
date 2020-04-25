@@ -1,36 +1,39 @@
 {
   "name": "wbstats",
   "version": "0.0.0",
-  "private": true,
+  "description": "React with Node.js app to show Wourld Bank statistics",
+  "engines": {
+    "node": "12.x",
+    "yarn": "1.22.4"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "client": "cd client && npm start",
+    "server": "nodemon ./index.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
   "dependencies": {
     "axios": "^0.19.2",
-    "node-sass": "^4.13.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "jsdom": "^16.2.2",
+    "xml": "^1.0.1"
   },
   "devDependencies": {
-    "react-scripts": "latest",
-    "redux-devtools-extension": "^2.13.8"
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2",
+    "request": "^2.81.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }
