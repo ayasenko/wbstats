@@ -48,6 +48,10 @@ body {
       background-color: gray;
       transition: background-color ease .8s;
     }
+
+    i[class^=icon] {
+      margin-left: 5px;
+    }
   }
 
   @include media(phone) {
