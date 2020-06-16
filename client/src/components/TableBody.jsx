@@ -16,14 +16,14 @@ class TableBody extends Component {
 
   componentDidMount() {
     const {history, data} = this.props;
-    let itemKey = history.location.pathname.slice(3);
+    let itemKey = history.location.pathname.slice(3).toUpperCase();
 
     if (itemKey && data[itemKey]) {
       this.handleRowFocus(null, data[itemKey]);
     }
 
     history.listen((location, action) => {
-      itemKey = location.pathname.slice(3);
+      itemKey = location.pathname.slice(3).toUpperCase();
       if (itemKey && data[itemKey] && action === 'POP') {
         this.handleRowFocus(null, data[itemKey]);
       }
@@ -67,7 +67,7 @@ class TableBody extends Component {
               <td>{rowCounter++}</td>
               <td>
                 <Link 
-                  to={ {pathname: `/E/${itemKey}`, name} } 
+                  to={ {pathname: `/e/${itemKey.toLocaleLowerCase()}`, name} } 
                   onClick={() => this.handleRowFocus(null, item)}
                   onKeyPress={e => this.handleRowFocus(e, item)}>
                   {this.decodeHtml(name)}
