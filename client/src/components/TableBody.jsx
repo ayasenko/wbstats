@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { expandRecord, fetchWikiData } from "../redux/actions";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class TableBody extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class TableBody extends Component {
   }
 
   componentDidMount() {
-    const {history, data} = this.props;
+    const { history, data } = this.props;
     let itemKey = history.location.pathname.slice(3).toUpperCase();
 
     if (itemKey && data[itemKey]) {
@@ -48,7 +49,7 @@ class TableBody extends Component {
     if (!data) {
       return null;
     }
-    
+
     let rowCounter = 1;
     const tableRows = Object.keys(data).map(itemKey => {
       const item = data[itemKey];
@@ -60,28 +61,28 @@ class TableBody extends Component {
         item.gdp && item.gdp[contextYear] ? item.gdp[contextYear] : null;
       const gdpCapita = item.gdpCapita ? item.gdpCapita[contextYear] : null;
       const { name, extract, expanded } = item;
-      
+
       return (
-        <React.Fragment key={itemKey}>          
-            <tr className="table-row table-row--record">
-              <td>{rowCounter++}</td>
-              <td>
-                <Link 
-                  to={ {pathname: `/e/${itemKey.toLocaleLowerCase()}`, name} } 
-                  onClick={() => this.handleRowFocus(null, item)}
-                  onKeyPress={e => this.handleRowFocus(e, item)}>
-                  {this.decodeHtml(name)}
-                </Link>
-              </td>
-              <td>{population ? population : "no data"}</td>
-              <td>{gdp ? `$${parseInt(gdp, 10)}` : "no data"}</td>
-              <td>{gdpCapita ? `$${parseInt(gdpCapita, 10)}` : "no data"}</td>
-            </tr>
-            <tr
+        <React.Fragment key={itemKey}>
+          <tr className="table-row table-row--record">
+            <td>{rowCounter++}</td>
+            <td>
+              <Link
+                to={{ pathname: `/e/${itemKey.toLocaleLowerCase()}`, name }}
+                onClick={() => this.handleRowFocus(null, item)}
+                onKeyPress={e => this.handleRowFocus(e, item)}>
+                {this.decodeHtml(name)}
+              </Link>
+            </td>
+            <td>{population ? population : "no data"}</td>
+            <td>{gdp ? `$${parseInt(gdp, 10)}` : "no data"}</td>
+            <td>{gdpCapita ? `$${parseInt(gdpCapita, 10)}` : "no data"}</td>
+          </tr>
+          <tr
             tabIndex={expanded ? "0" : "-1"}
             className={`table-row ${
               expanded ? "table-row--expanded" : "table-row--collapsed"
-            }`}
+              }`}
           >
             <td colSpan="5">
               <div className="more-info-block">
@@ -114,6 +115,7 @@ const mapStateToProps = state => {
   return { data, contextYear, sorting };
 };
 
-export default connect(mapStateToProps, { expandRecord, fetchWikiData })(
-  TableBody
-);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { expandRecord, fetchWikiData })
+)(TableBody);

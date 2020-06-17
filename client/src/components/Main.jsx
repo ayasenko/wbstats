@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Table from "./Table";
 import Form from "./Form";
 
-const Main = (props) => (
-  <React.Fragment>
+const Main = () => (
+  <>
     <Form />
-    <Table {...props} />
-  </React.Fragment>
+    <Table />
+  </>
 );
 
 export default Main;

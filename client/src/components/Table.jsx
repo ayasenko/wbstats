@@ -31,7 +31,7 @@ class Table extends Component {
     return (
       <table className="table">
         <TableHead />
-        <TableBody {...this.props} />
+        <TableBody/>
       </table>
     );
   }
