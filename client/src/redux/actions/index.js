@@ -8,7 +8,8 @@ import {
   FETCH_DATA_FAILURE,
   FETCH_WIKI_DATA,
   FETCH_WIKI_DATA_SUCCESS,
-  FETCH_WIKI_DATA_FAILURE
+  FETCH_WIKI_DATA_FAILURE,
+  COLLAPSE_RECORDS
 } from "./types";
 import { getData, getWikiExtract } from "../../helpers";
 import { wikiApi } from "../../api";
@@ -90,3 +91,7 @@ export const fetchWikiData = content => {
       });
   };
 };
+
+export const collapseRecords = () => ({
+  type: COLLAPSE_RECORDS
+});

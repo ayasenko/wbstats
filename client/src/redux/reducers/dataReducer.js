@@ -3,6 +3,7 @@ import {
   FETCH_DATA_SUCCESS,
   FETCH_DATA_FAILURE,
   EXPAND_RECORD,
+  COLLAPSE_RECORDS,
   SORT_BY_GROUP,
   SET_YEAR
 } from "../actions/types";
@@ -53,6 +54,22 @@ export default function(state = initialState, action) {
         const item = data[itemKey];
         item.expanded = item.key === targetKey && !item.expanded ? true : false;
         item.extract = item.key === targetKey ? response.extract : "";
+        newData[itemKey] = item;
+      });
+
+      return {
+        ...state,
+        data: newData
+      };
+    }
+
+    case COLLAPSE_RECORDS: {
+      const { data } = state;
+      const newData = {};
+
+      Object.keys(data).map(itemKey => {
+        const item = data[itemKey];
+        item.expanded = false;
         newData[itemKey] = item;
       });
 

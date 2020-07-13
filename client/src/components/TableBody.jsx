@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { expandRecord, fetchWikiData } from "../redux/actions";
+import { expandRecord, fetchWikiData, collapseRecords } from "../redux/actions";
 import { Link, withRouter } from "react-router-dom";
 
 class TableBody extends Component {
@@ -18,16 +18,18 @@ class TableBody extends Component {
   componentDidMount() {
     const { history, data } = this.props;
     let itemKey = history.location.pathname.slice(3).toUpperCase();
-
+    
     if (itemKey && data[itemKey]) {
       this.handleRowFocus(null, data[itemKey]);
     }
 
     history.listen((location, action) => {
       itemKey = location.pathname.slice(3).toUpperCase();
-      if (itemKey && data[itemKey] && action === 'POP') {
+      if(!itemKey) {
+        this.props.collapseRecords();
+      } else if (data[itemKey] && action === 'POP') {
         this.handleRowFocus(null, data[itemKey]);
-      }
+      } 
     })
   }
 
@@ -117,5 +119,5 @@ const mapStateToProps = state => {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { expandRecord, fetchWikiData })
+  connect(mapStateToProps, { expandRecord, fetchWikiData, collapseRecords })
 )(TableBody);
